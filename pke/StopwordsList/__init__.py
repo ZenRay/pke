@@ -24,6 +24,10 @@ def __get_words(filename):
                 data.append(word)
     return data
     
+def fields():
+    """Add Method To Get Fields"""
+    global _fields
+    return _fields
 
 
 for file in glob.glob(path.join(path.dirname(__file__), "*.txt")):
