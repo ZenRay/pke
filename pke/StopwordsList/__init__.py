@@ -11,10 +11,8 @@ import glob
 from ..langcodes import LANGUAGE_CODE_BY_NAME
 
 # appendix stopwords list
-_fields = [
-    file.split("_")[1] for file in glob.glob(path.join(path.dirname(__file__), "*.txt"))
-    if file.split("_")[1] in LANGUAGE_CODE_BY_NAME
-]
+_fields = []
+words = {}
 
 def __get_words(filename):
     """Extract Words In File"""
@@ -26,8 +24,16 @@ def __get_words(filename):
                 data.append(word)
     return data
     
-words = {
-    field: __get_words(
-        path.join(path.dirname(__file__), f"stopwords_{field}")
-    ) for field in _fields
-}
+
+
+for file in glob.glob(path.join(path.dirname(__file__), "*.txt")):
+    name = path.splitext(path.basename(file))[0]
+    field = name.split("_")[1] 
+    
+    if field in LANGUAGE_CODE_BY_NAME:
+        _fields.append(field)
+        words[field] = __get_words(filename=file)
+
+
+
+del path, glob, __get_words
