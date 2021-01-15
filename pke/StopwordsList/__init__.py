@@ -30,7 +30,7 @@ for file in glob.glob(path.join(path.dirname(__file__), "*.txt")):
     name = path.splitext(path.basename(file))[0]
     field = name.split("_")[1] 
     
-    if field in LANGUAGE_CODE_BY_NAME:
+    if field in LANGUAGE_CODE_BY_NAME.values():
         _fields.append(field)
         words[field] = __get_words(filename=file)
 
