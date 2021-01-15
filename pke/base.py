@@ -13,6 +13,7 @@ from nltk.tag.mapping import map_tag
 from nltk.stem.snowball import SnowballStemmer, PorterStemmer
 
 from .langcodes import LANGUAGE_CODE_BY_NAME
+from . import StopwordsList
 
 from string import punctuation
 import os
@@ -49,8 +50,9 @@ def get_stopwords(lang):
     """
     global PRINT_NO_STWO_WARNING
     try:
-        lang = lang_stopwords[lang]
-        return stopwords.words(lang)
+        language_name = lang_stopwords.get(lang)
+
+        return stopwords.words(language_name) if language_name else StopwordsList.words[lang]
     except KeyError:
         if PRINT_NO_STWO_WARNING[lang]:
             logging.warning('No stopwords for \'{}\' language.'.format(lang))
