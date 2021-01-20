@@ -139,12 +139,14 @@ class LoadFile(object):
         self.stoplist = None
         """List of stopwords."""
 
-    def load_document(self, input, **kwargs):
+    def load_document(self, input, *, stopwords_list=[], **kwargs):
         """Loads the content of a document/string/stream in a given language.
 
         Args:
             input (str): input.
             language (str): language of the input, defaults to 'en'.
+            stopwords_list (list): stopwords list, element is stopwords name like
+                'en', 'zh', default empty list 
             encoding (str): encoding of the raw file.
             normalization (str): word normalization method, defaults to
                 'stemming'. Other possible values are 'lemmatization' or 'None'
@@ -186,7 +188,12 @@ class LoadFile(object):
         self.sentences = doc.sentences
 
         # initialize the stoplist
-        self.stoplist = get_stopwords(self.language)
+        if not stopwords_list:
+            self.stoplist = []
+            for language in stopwords_list:
+                self.stoplist.extend(get_stopwords(language))
+        else:
+            self.stoplist = get_stopwords(self.language)
 
         # word normalization
         self.normalization = kwargs.get('normalization', 'stemming')
