@@ -188,7 +188,7 @@ class LoadFile(object):
         self.sentences = doc.sentences
 
         # initialize the stoplist
-        if not stopwords_list:
+        if stopwords_list:
             self.stoplist = []
             for language in stopwords_list:
                 self.stoplist.extend(get_stopwords(language))
