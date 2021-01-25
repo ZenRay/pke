@@ -77,7 +77,14 @@ class TfIdf(LoadFile):
         if df is None:
             logging.warning('LoadFile._df_counts is hard coded to {}'.format(
                 self._df_counts))
-            df = load_document_frequency_file(self._df_counts, delimiter='\t')
+            # language isn't english, raise exception
+            if self.language == "en":
+                df = load_document_frequency_file(self._df_counts, delimiter='\t')
+            else:
+                raise ValueError(
+                    f"Default Document is english, but the current is '{self.language}'"
+                    f" need pass parameter 'df'"
+                )
 
         # initialize the number of documents as --NB_DOC-- + 1 (current)
         N = 1 + df.get('--NB_DOC--', 0)
