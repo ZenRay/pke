@@ -198,7 +198,8 @@ class LoadFile(object):
         # word normalization
         self.normalization = kwargs.get('normalization', 'stemming')
 
-        if self.normalization == 'stemming':
+        # if language is chinese, don't stem the english word 
+        if not self.language != "zh" and self.normalization == 'stemming':
             stem = get_stemmer_func(self.language)
             get_stem = lambda s: [stem(w).lower() for w in s.words]
         else:
