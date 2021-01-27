@@ -483,7 +483,8 @@ class LoadFile(object):
                             valid_punctuation_marks='-',
                             maximum_word_number=5,
                             only_alphanum=True,
-                            pos_blacklist=None):
+                            pos_blacklist=None,
+                            punctuation_marks=None,):
         """Filter the candidates containing strings from the stoplist. Only
         keep the candidates containing alpha-numeric characters (if the
         non_latin_filter is set to True) and those length exceeds a given
@@ -503,6 +504,7 @@ class LoadFile(object):
                 alpha-numeric characters, defaults to True.
             pos_blacklist (list): list of unwanted Part-Of-Speeches in
                 candidates, defaults to [].
+            punctuation_marks (str): punctuation marks that will be removed
         """
 
         if stoplist is None:
@@ -511,6 +513,8 @@ class LoadFile(object):
         if pos_blacklist is None:
             pos_blacklist = []
 
+        if punctuation_marks is None:
+            punctuation_marks = punctuation
         # loop through the candidates
         for k in list(self.candidates):
 
@@ -529,7 +533,7 @@ class LoadFile(object):
                 del self.candidates[k]
 
             # discard if containing tokens composed of only punctuation
-            elif any([set(u).issubset(set(punctuation)) for u in words]):
+            elif any([set(u).issubset(set(punctuation_marks)) for u in words]):
                 del self.candidates[k]
 
             # discard candidates composed of 1-2 characters
