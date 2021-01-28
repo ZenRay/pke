@@ -9,6 +9,7 @@ from __future__ import division
 from __future__ import print_function
 
 import math
+from os import path
 import string
 import logging
 
@@ -61,7 +62,10 @@ class TfIdf(LoadFile):
         # initialize empty list if stoplist is not provided
         if stoplist is None:
             stoplist = list(string.punctuation)
-
+        
+        # update language model
+        if self.language == "zh":
+            self._df_counts = path.join(self._models, "df-zh_book_music_video.tsv.gz")
         # filter candidates containing punctuation marks
         self.candidate_filtering(stoplist=stoplist)
 
@@ -77,8 +81,8 @@ class TfIdf(LoadFile):
         if df is None:
             logging.warning('LoadFile._df_counts is hard coded to {}'.format(
                 self._df_counts))
-            # language isn't english, raise exception
-            if self.language == "en":
+            # language isn't english or chinese, raise exception
+            if self.language in ["en", "zh"]:
                 df = load_document_frequency_file(self._df_counts, delimiter='\t')
             else:
                 raise ValueError(
